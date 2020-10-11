@@ -1,6 +1,6 @@
 import telebot
 from fpdf import FPDF
-
+import os
 
 token = "905143600:AAFAQIk2RXspo3nsBoCJOyFIvYpXHksyG_E"
 bot = telebot.TeleBot(token)
@@ -601,6 +601,7 @@ def done(message):
         f = open("cv.pdf", "rb")
         bot.send_document(message.chat.id, f)
         bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме')
+        os.remove("cv.pdf")
 
     elif message.text == '2':
         titles1(pdf)
@@ -608,14 +609,14 @@ def done(message):
         f = open("cv.pdf", "rb")
         bot.send_document(message.chat.id, f)
         bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме')
-
+        os.remove("cv.pdf")
     elif message.text == '3':
         titles2(pdf)
         pdf.output('cv.pdf')
         f = open("cv.pdf", "rb")
         bot.send_document(message.chat.id, f)
         bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме')
-
+        os.remove("cv.pdf")
     else:
         bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме')
 
