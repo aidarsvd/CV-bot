@@ -554,7 +554,7 @@ def exp(message):
             x = expert.replace(" ", "")
             skills = x.split(',')
         else:
-            skills[0] = 'None'
+            skills.append('None')
 
         user_abcont = telebot.types.ReplyKeyboardMarkup(True, False)
         user_abcont.row("Да", "Нет")
