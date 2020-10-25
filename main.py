@@ -345,6 +345,19 @@ def handle_start(message):
 
 @bot.message_handler(commands=['reg'])
 def start(message):
+    name = ''
+    surname = ''
+    prof = ''
+    age = 0
+    num = 0
+    email = ''
+    adres = ''
+    ed_places = ''
+    jobs = ''
+    expert = ''
+    skills = []
+    lans = ''
+    languages = []
     if message.text == '/reg':
         bot.send_message(message.from_user.id, "Как вас зовут?")
         bot.register_next_step_handler(message, get_name) #следующий шаг – функция get_name
@@ -568,8 +581,10 @@ def exp(message):
 
 def resy_about(message):
     hide = telebot.types.ReplyKeyboardRemove()
+    choose = telebot.types.ReplyKeyboardMarkup(True, False)
+    choose.row("1", "2", "3")
     if message.text == "Да":
-        bot.send_message(message.from_user.id, "Выберите дизайн", reply_markup=hide)
+        bot.send_message(message.from_user.id, "Выберите дизайн", reply_markup=choose)
         bot.send_photo(message.from_user.id, photo=open('templates/first_pattern.jpg', 'rb'), caption='1 стиль')
         bot.send_photo(message.from_user.id, photo=open('templates/second_pattern.jpg', 'rb'), caption='2 стиль')
         bot.send_photo(message.from_user.id, photo=open('templates/third_pattern_1.jpg', 'rb'), caption='3 стиль')
