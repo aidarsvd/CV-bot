@@ -1,8 +1,9 @@
 import telebot
 from fpdf import FPDF
 import os
+import config
 
-token = "905143600:AAFAQIk2RXspo3nsBoCJOyFIvYpXHksyG_E"
+token = config.TOKEN
 bot = telebot.TeleBot(token)
 
 
