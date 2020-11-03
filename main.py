@@ -24,7 +24,9 @@ pdf = FPDF()
 
 
 def is_cyrrylic(symb):
-    return True if u'\u0400' <= symb <= u'\u04FF' or u'\u0500' <= symb <= u'\u052F' else False
+    return True if u'\u0400' <= \
+                   symb <= u'\u04FF' or u'\u0500' <= \
+                   symb <= u'\u052F' else False
 
 
 def titles(self):
@@ -137,12 +139,10 @@ def titles1(self):
     xm1 = 120
     ym1 = 56
 
-
     pdf.add_page()
     pdf.set_fill_color(138, 255, 185)
     pdf.rect(0, 0, 500, 50, 'F')
     self.set_xy(60, 0)
-
 
     self.set_font('Arial', 'B', 40)
     self.set_xy(xm, ym)
@@ -162,7 +162,6 @@ def titles1(self):
     self.set_xy(xm, ym)
     self.cell(w=210.0, h=25.0, txt="Contacts:", border=0)
 
-
     self.set_font('Arial', 'I', 18)
     self.set_text_color(0, 0, 0)
     ym += 12
@@ -181,13 +180,12 @@ def titles1(self):
     self.set_xy(xm, ym)
     self.cell(w=210.0, h=25.0, txt=f"home address: {adres}", border=0)
 
-
     self.set_font('Arial', 'B', 25)
     self.set_text_color(0, 0, 0)
     ym += 20
     self.set_xy(xm, ym)
     self.cell(w=210.0, h=25.0, txt="Experience:", border=0)
-    for i in range (len(jobsb)):
+    for i in range(len(jobsb)):
         self.set_font('Arial', 'I', 18)
         self.set_text_color(0, 0, 0)
         ym += 12
@@ -199,16 +197,12 @@ def titles1(self):
     ym += 20
     self.set_xy(xm, ym)
     self.cell(w=210.0, h=25.0, txt="Skills:", border=0)
-    for i in range (len(skills)):
+    for i in range(len(skills)):
         self.set_font('Arial', 'I', 18)
         self.set_text_color(0, 0, 0)
         ym += 12
         self.set_xy(xm, ym)
         self.cell(w=210.0, h=25.0, txt=skills[i], border=0)
-
-
-
-    # Second column
 
     self.set_font('Arial', 'B', 25)
     self.set_text_color(0, 0, 0)
@@ -240,7 +234,6 @@ def titles2(self):
     ym = 10
     pdf.add_page()
 
-
     self.set_font('Arial', 'B', 26)
     self.set_xy(xm, ym)
     self.set_text_color(0, 0, 0)
@@ -251,7 +244,6 @@ def titles2(self):
     self.set_xy(xm, ym)
     self.set_text_color(0, 0, 0)
     self.cell(w=200.0, h=10.0, txt=prof, border=0)
-
 
     self.set_font('Arial', 'B', 16)
     ym += 15
@@ -271,7 +263,6 @@ def titles2(self):
     self.set_text_color(0, 0, 0)
     self.cell(w=200.0, h=10.0, txt=f"address: {adres}", border=0)
 
-
     ym += 20
     self.set_font('Arial', 'B', 20)
     self.set_xy(0, ym)
@@ -281,8 +272,7 @@ def titles2(self):
     pdf.rect(25, ym, 160, 1, 'F')
     ym += 4
 
-    for i in range (len(edues)):
-
+    for i in range(len(edues)):
         self.set_font('Arial', size=16)
         self.set_xy(25, ym)
         ym += 8
@@ -345,12 +335,14 @@ def handle_docs_audio(message):
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    bot.send_message(message.from_user.id, "Привет! Я бот который сгенерирует тебе резюме. Отправь мне команду /reg чтобы приступить.")
+    bot.send_message(message.from_user.id, "Привет! Я бот который сгенерирует"
+                                           "тебе резюме. Отправь мне"
+                                           "команду /reg"
+                                           "чтобы приступить.")
 
 
 @bot.message_handler(commands=['reg'])
 def start(message):
-
     global name
     global surname
     global age
@@ -364,16 +356,21 @@ def start(message):
 
     if message.text == '/reg':
         bot.send_message(message.from_user.id, "Как вас зовут?")
-        bot.register_next_step_handler(message, get_name) #следующий шаг – функция get_name
+        bot.register_next_step_handler(message, get_name)
     else:
-        bot.send_message(message.from_user.id, 'Привет! Я бот который сгенерирует тебе резюме. Отправь мне команду /reg чтобы приступить')
+        bot.send_message(message.from_user.id, "Привет! Я бот который "
+                                               "сгенерирует"
+                                               "тебе резюме. Отправь мне"
+                                               "команду /reg"
+                                               "чтобы приступить.")
 
 
 def get_name(message):
     global name
-    if is_cyrrylic(message.text) == True:
+    if is_cyrrylic(message.text):
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы исправить')
+        bot.send_message(message.from_user.id, 'Отправь мне команду '
+                                               '/reg чтобы исправить')
     else:
         name = message.text
         bot.send_message(message.from_user.id, 'Ваша фамилия?')
@@ -382,9 +379,10 @@ def get_name(message):
 
 def get_surname(message):
     global surname
-    if is_cyrrylic(message.text) == True:
+    if is_cyrrylic(message.text):
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы исправить')
+        bot.send_message(message.from_user.id, 'Отправь мне команду '
+                                               '/reg чтобы исправить')
     else:
         surname = message.text
         bot.send_message(message.from_user.id, 'Ваша специальность:')
@@ -393,9 +391,10 @@ def get_surname(message):
 
 def prof(message):
     global prof
-    if is_cyrrylic(message.text) == True:
+    if is_cyrrylic(message.text):
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы исправить')
+        bot.send_message(message.from_user.id, 'Отправь мне команду '
+                                               '/reg чтобы исправить')
     else:
         prof = message.text
         bot.register_next_step_handler(message, get_age)
@@ -404,9 +403,10 @@ def prof(message):
 
 def get_age(message):
     global age
-    if is_cyrrylic(message.text) == True:
+    if is_cyrrylic(message.text):
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы исправить')
+        bot.send_message(message.from_user.id, 'Отправь мне команду '
+                                               '/reg чтобы исправить')
     else:
         age = message.text
         user_m = telebot.types.ReplyKeyboardMarkup(True, False)
@@ -415,7 +415,8 @@ def get_age(message):
                                                f'Ваше имя: {name} \n'
                                                f'Ваша фамилия: {surname}\n'
                                                f'Ваша специальность: {prof}\n'
-                                               f'Ваш возраст: {age}', reply_markup=user_m)
+                                               f'Ваш возраст: '
+                                               f'{age}', reply_markup=user_m)
 
         bot.register_next_step_handler(message, resy)
 
@@ -425,15 +426,25 @@ def resy(message):
     user_m = telebot.types.ReplyKeyboardMarkup(True, False)
     user_m.row("Да", "Нет")
     if message.text == "Да":
-        bot.send_message(message.from_user.id, "Отлично! Продолжаем...", reply_markup=user_m)
-        bot.send_message(message.from_user.id, "Введите команду /cont , чтобы заполнить контактные данные", reply_markup=hide)
-
+        bot.send_message(message.from_user.id, "Отлично! "
+                                               "Продолжаем..."
+                                               "", reply_markup=user_m)
+        bot.send_message(message.from_user.id, "Введите "
+                                               "команду /cont , "
+                                               "чтобы заполнить "
+                                               "контактные "
+                                               "данные", reply_markup=hide)
 
     elif message.text == "Нет":
-        bot.send_message(message.from_user.id, "Чтобы исправить, отправьте команду /reg", reply_markup=hide)
-
+        bot.send_message(message.from_user.id, "Чтобы исправить, "
+                                               "отправьте команду "
+                                               "/reg", reply_markup=hide)
     else:
-        bot.send_message(message.from_user.id, 'Привет! Я бот который сгенерирует тебе резюме. Отправь мне команду /reg чтобы приступить')
+        bot.send_message(message.from_user.id, "Привет! Я бот который "
+                                               "сгенерирует"
+                                               "тебе резюме. Отправь мне"
+                                               "команду /reg"
+                                               "чтобы приступить.")
 
 
 @bot.message_handler(commands=['cont'])
@@ -444,9 +455,10 @@ def get_num(message):
 
 def number(message):
     global num
-    if is_cyrrylic(message.text) == True:
+    if is_cyrrylic(message.text):
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
-        bot.send_message(message.from_user.id, 'Отправь мне команду /cont чтобы исправить')
+        bot.send_message(message.from_user.id, 'Отправь мне команду'
+                                               ' /cont чтобы исправить')
     else:
         num = message.text
         bot.register_next_step_handler(message, elmail)
@@ -455,9 +467,11 @@ def number(message):
 
 def elmail(message):
     global email
-    if is_cyrrylic(message.text) == True:
-        bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
-        bot.send_message(message.from_user.id, 'Отправь мне команду /cont чтобы исправить')
+    if is_cyrrylic(message.text):
+        bot.send_message(message.from_user.id, 'Вводите данные на'
+                                               ' латинице!')
+        bot.send_message(message.from_user.id, 'Отправь мне команду '
+                                               '/cont чтобы исправить')
     else:
         email = message.text
         bot.register_next_step_handler(message, get_adres)
@@ -466,9 +480,10 @@ def elmail(message):
 
 def get_adres(message):
     global adres
-    if is_cyrrylic(message.text) == True:
+    if is_cyrrylic(message.text):
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
-        bot.send_message(message.from_user.id, 'Отправь мне команду /cont чтобы исправить')
+        bot.send_message(message.from_user.id, 'Отправь мне '
+                                               'команду /cont чтобы исправить')
     else:
         adres = message.text
         user_mcont = telebot.types.ReplyKeyboardMarkup(True, False)
@@ -476,7 +491,10 @@ def get_adres(message):
         bot.send_message(message.from_user.id, 'Данные верны? \n'
                                                f'Ваш номер телефона: {num} \n'
                                                f'Ваш адрес эл.почты: {email}\n'
-                                               f'Ваш домашний адрес: {adres}', reply_markup=user_mcont)
+                                               f'Ваш '
+                                               f'домашний адрес: '
+                                               f'{adres}',
+                         reply_markup=user_mcont)
 
         bot.register_next_step_handler(message, resy_cont)
 
@@ -484,14 +502,26 @@ def get_adres(message):
 def resy_cont(message):
     hide = telebot.types.ReplyKeyboardRemove()
     if message.text == "Да":
-        bot.send_message(message.from_user.id, "Отлично! Продолжаем...", reply_markup=hide)
-        bot.send_message(message.from_user.id, "Введите команду /about , чтобы заполнить данные о себе")
+        bot.send_message(message.from_user.id, "Отлично! "
+                                               "Продолжаем...",
+                         reply_markup=hide)
+        bot.send_message(message.from_user.id, "Введите "
+                                               "команду /about , "
+                                               "чтобы заполнить "
+                                               "данные о себе")
 
     elif message.text == "Нет":
-        bot.send_message(message.from_user.id, "Чтобы исправить, отправьте команду /cont", reply_markup=hide)
+        bot.send_message(message.from_user.id, "Чтобы исправить, "
+                                               "отправьте команду "
+                                               "/cont", reply_markup=hide)
 
     else:
-        bot.send_message(message.from_user.id, 'Привет! Я бот который сгенерирует тебе резюме. Отправь мне команду /reg чтобы приступить')
+        bot.send_message(message.from_user.id, "Привет! Я бот который "
+                                               "сгенерирует"
+                                               "тебе резюме. Отправь мне"
+                                               "команду /reg"
+                                               "чтобы приступить.")
+
 
 edues = []
 
@@ -499,14 +529,20 @@ edues = []
 @bot.message_handler(commands=['about'])
 def adding(message):
     bot.send_message(message.from_user.id, "Образование:")
-    bot.send_message(message.from_user.id, "Введите команду /skip чтобы пропустить, или перечислите ваше образование "
+    bot.send_message(message.from_user.id, "Введите команду "
+                                           "/skip чтобы пропустить, "
+                                           "или перечислите"
+                                           " ваше образование "
                                            "через знак запятой")
     bot.register_next_step_handler(message, get_edu)
 
+
 def get_edu(message):
-    if is_cyrrylic(message.text) == True:
+    if is_cyrrylic(message.text):
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
-        bot.send_message(message.from_user.id, 'Отправь мне команду /about чтобы исправить')
+        bot.send_message(message.from_user.id, 'Отправь '
+                                               'мне команду /about '
+                                               'чтобы исправить')
     else:
         global ed_places
         global edues
@@ -518,7 +554,9 @@ def get_edu(message):
             edues.append('None')
 
         bot.send_message(message.from_user.id, "Места работы: ")
-        bot.send_message(message.from_user.id, "Введите команду /skip чтобы пропустить, или перечислите места работы "
+        bot.send_message(message.from_user.id, "Введите команду /skip "
+                                               "чтобы пропустить, или "
+                                               "перечислите места работы "
                                                "через знак запятой")
         bot.register_next_step_handler(message, get_jobs)
 
@@ -529,9 +567,11 @@ jobsb = []
 def get_jobs(message):
     global jobs
     global jobsb
-    if is_cyrrylic(message.text) == True:
+    if is_cyrrylic(message.text):
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
-        bot.send_message(message.from_user.id, 'Отправь мне команду /about чтобы исправить')
+        bot.send_message(message.from_user.id, 'Отправь '
+                                               'мне команду /about '
+                                               'чтобы исправить')
     else:
         if message.text != '/skip':
             jobs = message.text
@@ -541,7 +581,9 @@ def get_jobs(message):
             jobsb.append('None')
 
         bot.send_message(message.from_user.id, "Языки: ")
-        bot.send_message(message.from_user.id, "Введите команду /skip чтобы пропустить, или языки которыми владеете "
+        bot.send_message(message.from_user.id, "Введите команду /skip чтобы "
+                                               "пропустить, или языки "
+                                               "которыми владеете "
                                                "через знак запятой")
 
         bot.register_next_step_handler(message, get_lans)
@@ -550,9 +592,11 @@ def get_jobs(message):
 def get_lans(message):
     global languages
     global lans
-    if is_cyrrylic(message.text) == True:
+    if is_cyrrylic(message.text):
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
-        bot.send_message(message.from_user.id, 'Отправь мне команду /about чтобы исправить')
+        bot.send_message(message.from_user.id, 'Отправь '
+                                               'мне команду /about '
+                                               'чтобы исправить')
     else:
         if message.text != '/skip':
             lans = message.text
@@ -563,16 +607,20 @@ def get_lans(message):
 
         bot.register_next_step_handler(message, exp)
         bot.send_message(message.from_user.id, "Эксперты в:")
-        bot.send_message(message.from_user.id, "Введите команду /skip чтобы пропустить, или перечислите ваши умения "
+        bot.send_message(message.from_user.id, "Введите команду "
+                                               "/skip чтобы пропустить, "
+                                               "или перечислите ваши умения "
                                                "через знак запятой")
 
 
 def exp(message):
     global expert
     global skills
-    if is_cyrrylic(message.text) == True:
+    if is_cyrrylic(message.text):
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
-        bot.send_message(message.from_user.id, 'Отправь мне команду /about чтобы исправить')
+        bot.send_message(message.from_user.id, 'Отправь '
+                                               'мне команду /about '
+                                               'чтобы исправить')
     else:
         if message.text != '/skip':
             expert = message.text
@@ -587,7 +635,8 @@ def exp(message):
                                                f'Ваше образование: {edues} \n'
                                                f'Места работы: {jobsb}\n'
                                                f'Языки: {lans}\n'
-                                               f'Эксперты в: {skills}', reply_markup=user_abcont)
+                                               f'Эксперты в: {skills}',
+                         reply_markup=user_abcont)
         bot.register_next_step_handler(message, resy_about)
 
 
@@ -596,17 +645,28 @@ def resy_about(message):
     choose = telebot.types.ReplyKeyboardMarkup(True, False)
     choose.row("1", "2", "3")
     if message.text == "Да":
-        bot.send_message(message.from_user.id, "Выберите дизайн", reply_markup=choose)
-        bot.send_photo(message.from_user.id, photo=open('templates/first_pattern.jpg', 'rb'), caption='1 стиль')
-        bot.send_photo(message.from_user.id, photo=open('templates/second_pattern.jpg', 'rb'), caption='2 стиль')
-        bot.send_photo(message.from_user.id, photo=open('templates/third_pattern_1.jpg', 'rb'), caption='3 стиль')
-
+        bot.send_message(message.from_user.id, ""
+                                               "Выберите дизайн",
+                         reply_markup=choose)
+        bot.send_photo(message.from_user.id,
+                       photo=open('templates/first_pattern.jpg', 'rb'),
+                       caption='1 стиль')
+        bot.send_photo(message.from_user.id,
+                       photo=open('templates/second_pattern.jpg', 'rb'),
+                       caption='2 стиль')
+        bot.send_photo(message.from_user.id,
+                       photo=open('templates/third_pattern_1.jpg', 'rb'),
+                       caption='3 стиль')
 
     elif message.text == "Нет":
-        bot.send_message(message.from_user.id, "Чтобы исправить, отправьте команду /about", reply_markup=hide)
+        bot.send_message(message.from_user.id, "Чтобы исправить,"
+                                               "отправьте команду /about",
+                         reply_markup=hide)
 
     else:
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме')
+        bot.send_message(message.from_user.id, 'Отправь мне '
+                                               'команду /reg чтобы '
+                                               'создать новое резюме')
     bot.register_next_step_handler(message, done)
 
 
@@ -623,13 +683,15 @@ def done(message):
     global expert
     hide = telebot.types.ReplyKeyboardRemove()
 
-
     if message.text == '1':
         titles(pdf)
         pdf.output('cv.pdf')
         f = open("cv.pdf", "rb")
         bot.send_document(message.chat.id, f)
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме', reply_markup=hide)
+        bot.send_message(message.from_user.id, 'Отправь мне команду /reg '
+                                               'чтобы создать новое '
+                                               'резюме',
+                         reply_markup=hide)
         os.remove("cv.pdf")
 
     elif message.text == '2':
@@ -637,16 +699,26 @@ def done(message):
         pdf.output('cv.pdf')
         f = open("cv.pdf", "rb")
         bot.send_document(message.chat.id, f)
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме', reply_markup=hide)
+        bot.send_message(message.from_user.id, 'Отправь мне команду /reg '
+                                               'чтобы создать новое '
+                                               'резюме',
+                         reply_markup=hide)
         os.remove("cv.pdf")
     elif message.text == '3':
         titles2(pdf)
         pdf.output('cv.pdf')
         f = open("cv.pdf", "rb")
         bot.send_document(message.chat.id, f)
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме', reply_markup=hide)
+        bot.send_message(message.from_user.id, 'Отправь мне команду /reg '
+                                               'чтобы создать новое '
+                                               'резюме',
+                         reply_markup=hide)
         os.remove("cv.pdf")
     else:
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме', reply_markup=hide)
+        bot.send_message(message.from_user.id, 'Отправь мне команду /reg '
+                                               'чтобы создать новое '
+                                               'резюме',
+                         reply_markup=hide)
+
 
 bot.polling(none_stop=True)
