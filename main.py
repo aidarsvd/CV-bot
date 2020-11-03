@@ -6,8 +6,6 @@ import config
 token = config.TOKEN
 bot = telebot.TeleBot(token)
 
-
-
 name = ''
 surname = ''
 prof = ''
@@ -24,8 +22,10 @@ languages = []
 
 pdf = FPDF()
 
+
 def is_cyrrylic(symb):
-    return True if u'\u0400' <= symb <=u'\u04FF' or u'\u0500' <= symb <= u'\u052F' else False
+    return True if u'\u0400' <= symb <= u'\u04FF' or u'\u0500' <= symb <= u'\u052F' else False
+
 
 def titles(self):
     xm = 60
@@ -128,6 +128,7 @@ def titles(self):
     self.set_font('Arial', size=12)
     self.set_text_color(0, 0, 0)
     self.cell(w=60.0, h=40.0, txt=adres, border=0)
+
 
 def titles1(self):
     xm = 10
@@ -233,6 +234,7 @@ def titles1(self):
         self.set_xy(xm1, ym1)
         self.cell(w=210.0, h=25.0, txt=languages[i], border=0)
 
+
 def titles2(self):
     xm = 25
     ym = 10
@@ -335,37 +337,39 @@ def titles2(self):
         self.set_text_color(0, 0, 0)
         self.cell(w=200.0, h=10.0, txt=languages[i], border=0)
 
-#Обработчик для документов и аудиофайлов
+
 @bot.message_handler(content_types=['document', 'audio'])
 def handle_docs_audio(message):
     pass
+
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     bot.send_message(message.from_user.id, "Привет! Я бот который сгенерирует тебе резюме. Отправь мне команду /reg чтобы приступить.")
 
+
 @bot.message_handler(commands=['reg'])
 def start(message):
-    name = ''
-    surname = ''
-    prof = ''
-    age = 0
-    num = 0
-    email = ''
-    adres = ''
-    ed_places = ''
-    jobs = ''
-    expert = ''
-    skills = []
-    lans = ''
-    languages = []
+
+    global name
+    global surname
+    global age
+    global prof
+    global num
+    global email
+    global adres
+    global ed_places
+    global jobs
+    global expert
+
     if message.text == '/reg':
         bot.send_message(message.from_user.id, "Как вас зовут?")
         bot.register_next_step_handler(message, get_name) #следующий шаг – функция get_name
     else:
         bot.send_message(message.from_user.id, 'Привет! Я бот который сгенерирует тебе резюме. Отправь мне команду /reg чтобы приступить')
 
-def get_name(message): #получаем фамилию
+
+def get_name(message):
     global name
     if is_cyrrylic(message.text) == True:
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
@@ -422,7 +426,7 @@ def resy(message):
     user_m.row("Да", "Нет")
     if message.text == "Да":
         bot.send_message(message.from_user.id, "Отлично! Продолжаем...", reply_markup=user_m)
-        bot.send_message(message.from_user.id, "Введите команду /cont , чтобы заполнить контактные данные", reply_markup=user_m)
+        bot.send_message(message.from_user.id, "Введите команду /cont , чтобы заполнить контактные данные", reply_markup=hide)
 
 
     elif message.text == "Нет":
@@ -436,6 +440,7 @@ def resy(message):
 def get_num(message):
     bot.send_message(message.from_user.id, "Ваш номер телефона:")
     bot.register_next_step_handler(message, number)
+
 
 def number(message):
     global num
@@ -457,6 +462,7 @@ def elmail(message):
         email = message.text
         bot.register_next_step_handler(message, get_adres)
         bot.send_message(message.from_user.id, "Ваш домашний адрес:")
+
 
 def get_adres(message):
     global adres
@@ -488,6 +494,8 @@ def resy_cont(message):
         bot.send_message(message.from_user.id, 'Привет! Я бот который сгенерирует тебе резюме. Отправь мне команду /reg чтобы приступить')
 
 edues = []
+
+
 @bot.message_handler(commands=['about'])
 def adding(message):
     bot.send_message(message.from_user.id, "Образование:")
@@ -516,6 +524,8 @@ def get_edu(message):
 
 
 jobsb = []
+
+
 def get_jobs(message):
     global jobs
     global jobsb
@@ -535,6 +545,7 @@ def get_jobs(message):
                                                "через знак запятой")
 
         bot.register_next_step_handler(message, get_lans)
+
 
 def get_lans(message):
     global languages
@@ -575,7 +586,7 @@ def exp(message):
         bot.send_message(message.from_user.id, 'Данные верны? \n'
                                                f'Ваше образование: {edues} \n'
                                                f'Места работы: {jobsb}\n'
-                                               f'Места работы: {lans}\n'
+                                               f'Языки: {lans}\n'
                                                f'Эксперты в: {skills}', reply_markup=user_abcont)
         bot.register_next_step_handler(message, resy_about)
 
@@ -610,13 +621,15 @@ def done(message):
     global ed_places
     global jobs
     global expert
+    hide = telebot.types.ReplyKeyboardRemove()
+
 
     if message.text == '1':
         titles(pdf)
         pdf.output('cv.pdf')
         f = open("cv.pdf", "rb")
         bot.send_document(message.chat.id, f)
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме')
+        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме', reply_markup=hide)
         os.remove("cv.pdf")
 
     elif message.text == '2':
@@ -624,16 +637,16 @@ def done(message):
         pdf.output('cv.pdf')
         f = open("cv.pdf", "rb")
         bot.send_document(message.chat.id, f)
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме')
+        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме', reply_markup=hide)
         os.remove("cv.pdf")
     elif message.text == '3':
         titles2(pdf)
         pdf.output('cv.pdf')
         f = open("cv.pdf", "rb")
         bot.send_document(message.chat.id, f)
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме')
+        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме', reply_markup=hide)
         os.remove("cv.pdf")
     else:
-        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме')
+        bot.send_message(message.from_user.id, 'Отправь мне команду /reg чтобы создать новое резюме', reply_markup=hide)
 
 bot.polling(none_stop=True)
