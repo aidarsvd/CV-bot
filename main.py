@@ -14,6 +14,7 @@ num = 0
 email = ''
 adres = ''
 ed_places = ''
+edues = []
 jobs = ''
 expert = ''
 skills = []
@@ -328,11 +329,6 @@ def titles2(self):
         self.cell(w=200.0, h=10.0, txt=languages[i], border=0)
 
 
-@bot.message_handler(content_types=['document', 'audio'])
-def handle_docs_audio(message):
-    pass
-
-
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     bot.send_message(message.from_user.id, "Привет! Я бот который сгенерирует"
@@ -346,13 +342,6 @@ def start(message):
     global name
     global surname
     global age
-    global prof
-    global num
-    global email
-    global adres
-    global ed_places
-    global jobs
-    global expert
 
     if message.text == '/reg':
         bot.send_message(message.from_user.id, "Как вас зовут?")
@@ -386,10 +375,10 @@ def get_surname(message):
     else:
         surname = message.text
         bot.send_message(message.from_user.id, 'Ваша специальность:')
-        bot.register_next_step_handler(message, prof)
+        bot.register_next_step_handler(message, proff)
 
 
-def prof(message):
+def proff(message):
     global prof
     if is_cyrrylic(message.text):
         bot.send_message(message.from_user.id, 'Вводите данные на латинице!')
@@ -521,9 +510,6 @@ def resy_cont(message):
                                                "тебе резюме. Отправь мне"
                                                "команду /reg"
                                                "чтобы приступить.")
-
-
-edues = []
 
 
 @bot.message_handler(commands=['about'])
